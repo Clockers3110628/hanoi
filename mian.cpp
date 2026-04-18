@@ -42,7 +42,7 @@ int main() {
 
         std::cout << "选1迭代，选2循环" << std::endl;
         std::cin >> a;
-        std::cout << "选择层数（最好10以下）" << std::endl;
+        std::cout << "选择层数（10以下）" << std::endl;
         std::cin >> layer;
         stick_int();
         if (1)
@@ -124,6 +124,10 @@ void move(int n, vector<int>& a, vector<int>& b, vector<int>& c) {
 }
 
 void stick_int() {
+    //先全清零
+    for (int i = 1; i <= 10; ++i) {
+        sticks.c[10 - i] = 0;
+    }
     for (int i = 1; i <= layer; ++i) {
         sticks.a[layer - i] = i;
     }
@@ -230,10 +234,6 @@ void while_move() {
         std::cout << list[0].a << " " << list[1].a << " " << list[2].a << std::endl;
         std::cout << "- - -" << std::endl;
         
-        //从大到小排列，并找出最大数
-        //vector<num> list({list()});
-
-
         if (beat_and_put(list[0], &tag)) {
             if (beat_and_put(list[1],&tag)) {
                 if (beat_and_put(list[2],&tag));
@@ -241,7 +241,6 @@ void while_move() {
                              
         }
            
-
         //检测到c柱的位子满就退出
         if (test())
             return;
