@@ -33,12 +33,14 @@ void while_move();
 vector<num> read_num();
 num ReadOneNum(vector<int>& a);
 vector<num> list();
-bool ifMove(num const& a);
+int beat_and_put(num &a,num &b,num &c);
+bool test();
 
 int main() {
     stick_int();
 
-    move(layer, sticks.a, sticks.b, sticks.c);
+    //move(layer, sticks.a, sticks.b, sticks.c);
+    while_move();
 
     return 0;
 }
@@ -146,61 +148,21 @@ vector<num> list() {
 }
 
 //对比函数
-int beat(num const&a,num const&b,num const&c){
+int beat_and_put(num &a,num &b,num &c){
 
     if(b.a!=0 && a.a >= b.a){
         if (c.a!=0 && a.a >= c.a)
         {
-           return 0;
+           return 1;
         }
         else{
             move_one(*(a.b),*(c.b));
+            return 0;
         }
         
     }
     move_one(*(a.b),*(b.b));
-
-}
-//判断是否能动
-
-// bool ifMove(num const& a) {
-//     int first_a = first_number(sticks.a);
-//     int first_b = first_number(sticks.b);
-//     int first_c = first_number(sticks.c);
-    
-//     if (*(a.b) == sticks.a) {
-//             if(a.a >= first_b){
-                
-//             }
-            
-//         }
-//     else if (*(a.b) == sticks.b) {
-
-//         }
-//     else {
-
-//     }
-
-//     return 0;
-// }
-//从左往右放
-void putdown(num& i, int tag) {
-    //判断上一次是否已动过
-    
-    if (i.a!=tag) {
-        if (*(i.b) == sticks.a) {
-
-        }
-        else if (*(i.b) == sticks.b) {
-
-        }
-        else {
-
-        }
-  
-        tag = i.a;
-    }
-
+    return 0;
 
 }
 
@@ -215,20 +177,20 @@ bool test() {
 }
 
 void while_move() {
+    while (1)
+    {
     //从大到小排列，并找出最大数
-    vector<num> list(list());
+    vector<num> list((list()));
     int tag = 0;
-    //往下遍历找出能动的数
-    while(1) {
-        auto i = begin(list);
-        for (; !ifMove(*i) && i != end(list); ++i) {}
-        //从左往右放
-        putdown(*i,tag);
+
+    while(beat_and_put(list[0],list[1],list[2] ) ){
         //检测到c柱的位子满就退出
         if(test())
-        break;
+        return;
     }
-
+            
+    }
+    
 }
 
 
