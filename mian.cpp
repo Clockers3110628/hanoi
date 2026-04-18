@@ -25,7 +25,7 @@ struct all_num {
 void stick_printf(stick* sticks);
 void move(int n, vector<int> &a, vector<int> &b, vector<int> &c);
 void stick_int();
-void move_one(vector<int>& a, vector<int>& b, vector<int>& c);
+void move_one(vector<int>& a, vector<int>& c);
 int first_number(vector<int>& a);
 int first_number(vector<int>& a, int b);
 void while_move();
@@ -77,7 +77,7 @@ int first_number(vector<int>& a,int b){
     }
 }
 
-void move_one(vector<int>& a, vector<int>& b, vector<int>& c) {
+void move_one(vector<int>& a, vector<int>& c) {
 
     int tag = first_number(a,0);
 
@@ -97,12 +97,12 @@ void move_one(vector<int>& a, vector<int>& b, vector<int>& c) {
 void move(int n, vector<int> &a, vector<int> &b, vector<int> &c) {
     if (n == 1) {
         //
-        move_one(a, b, c);
+        move_one(a, c);
         return;
     }
 
     move(n - 1, a, c, b);
-    move_one(a, b, c);
+    move_one(a, c);
     move(n - 1, b, a, c);
 }
 
@@ -145,12 +145,44 @@ vector<num> list() {
     return list;
 }
 
-//判断是否能动
-bool ifMove(num const& a) {
+//对比函数
+int beat(num const&a,num const&b,num const&c){
 
+    if(b.a!=0 && a.a >= b.a){
+        if (c.a!=0 && a.a >= c.a)
+        {
+           return 0;
+        }
+        else{
+            move_one(*(a.b),*(c.b));
+        }
+        
+    }
+    move_one(*(a.b),*(b.b));
 
-    return 0;
 }
+//判断是否能动
+
+// bool ifMove(num const& a) {
+//     int first_a = first_number(sticks.a);
+//     int first_b = first_number(sticks.b);
+//     int first_c = first_number(sticks.c);
+    
+//     if (*(a.b) == sticks.a) {
+//             if(a.a >= first_b){
+                
+//             }
+            
+//         }
+//     else if (*(a.b) == sticks.b) {
+
+//         }
+//     else {
+
+//     }
+
+//     return 0;
+// }
 //从左往右放
 void putdown(num& i, int tag) {
     //判断上一次是否已动过
@@ -206,4 +238,5 @@ void while_move() {
 // 忌边敲边想，即便有思路
 // 函数里不能break
 // 无效的强制类型转换，指针转int等
+//不要过度封装
 //vector函数不能直接用来赋值？
