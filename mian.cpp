@@ -3,7 +3,7 @@
 
 using std::vector;
 
-constexpr int layer = 4;
+int layer = 10;
 
 struct stick {
     vector<int> a = vector<int>(layer);
@@ -23,7 +23,7 @@ struct all_num {
 };
 
 void stick_printf(stick* sticks);
-void move(int n, vector<int> &a, vector<int> &b, vector<int> &c);
+void move(int n, vector<int>& a, vector<int>& b, vector<int>& c);
 void stick_int();
 void move_one(vector<int>& a, vector<int>& c);
 int first_number(vector<int>& a);
@@ -32,15 +32,30 @@ void while_move();
 
 vector<num> read_num();
 num ReadOneNum(vector<int>& a);
-vector<num> list();
-int beat_and_put(num &a,num &b,num &c);
 bool test();
+bool beat_and_put(num& a, int* i);
 
 int main() {
-    stick_int();
+    int b;
+    do {
+        char a;
 
-    //move(layer, sticks.a, sticks.b, sticks.c);
-    while_move();
+        std::cout << "选1迭代，选2循环" << std::endl;
+        std::cin >> a;
+        std::cout << "选择层数（最好10以下）" << std::endl;
+        std::cin >> layer;
+        stick_int();
+        if (1)
+        {
+            move(layer, sticks.a, sticks.b, sticks.c);
+        }
+        else {
+            while_move();
+        }
+
+        std::cout << "选1继续，选0退出" << std::endl;
+        std::cin >> b;
+    } while (b);
 
     return 0;
 }
@@ -48,7 +63,7 @@ int main() {
 
 void stick_printf(stick* sticks) {
     for (int i = layer; i >= 1; --i) {
-        std::cout << sticks->a[i-1] << " " << sticks->b[i-1] << " " << sticks->c[i-1] << std::endl;
+        std::cout << sticks->a[i - 1] << " " << sticks->b[i - 1] << " " << sticks->c[i - 1] << std::endl;
 
     }
     std::cout << "- - -" << std::endl;
@@ -59,18 +74,18 @@ int first_number(vector<int>& a) {
     auto q = end(a) - 1;
     for (; q != begin(a) && *q == 0; --q) {}//找到柱子的第一个数或起始数（未知是0或数）
     if (q == begin(a) && *q == 0) {
-        return -1;//没找到数
+        return 0;//没找到数
     }
     else {
         return *q;
     }
 }
 
-int first_number(vector<int>& a,int b){
+int first_number(vector<int>& a, int b) {
     auto q = end(a) - 1;
     for (; q != begin(a) && *q == 0; --q) {}//找到柱子的第一个数或起始数（未知是0或数）
     if (q == begin(a) && *q == 0) {
-        return -1;//没找到数
+        return 0;//没找到数
     }
     else {
         int num = *q;
@@ -81,7 +96,7 @@ int first_number(vector<int>& a,int b){
 
 void move_one(vector<int>& a, vector<int>& c) {
 
-    int tag = first_number(a,0);
+    int tag = first_number(a, 0);
 
     auto p = end(c) - 1;
     for (; p != begin(c) && *p == 0; --p) {}
@@ -96,7 +111,7 @@ void move_one(vector<int>& a, vector<int>& c) {
 
 }
 
-void move(int n, vector<int> &a, vector<int> &b, vector<int> &c) {
+void move(int n, vector<int>& a, vector<int>& b, vector<int>& c) {
     if (n == 1) {
         //
         move_one(a, c);
@@ -110,17 +125,17 @@ void move(int n, vector<int> &a, vector<int> &b, vector<int> &c) {
 
 void stick_int() {
     for (int i = 1; i <= layer; ++i) {
-        sticks.a[layer-i] = i;
+        sticks.a[layer - i] = i;
     }
     stick_printf(&sticks);
 }
 
 
 
-num ReadOneNum(vector<int>&a) {
+num ReadOneNum(vector<int>& a) {
     num x;
-    x.a = first_number(sticks.a);
-    x.b = &sticks.a;
+    x.a = first_number(a);
+    x.b = &a;
     return x;
 }
 
@@ -147,21 +162,40 @@ vector<num> read_num() {
 //     return list;
 // }
 
-//对比函数
-int beat_and_put(num &a,num &b,num &c){
 
-    if(b.a!=0 && a.a >= b.a){
-        if (c.a!=0 && a.a >= c.a)
+//对比函数
+bool beat_and_put(num& a, int* i) {
+    num b;
+    num c;
+
+    if (*(a.b) == sticks.a) {
+        b = { first_number(sticks.b),&sticks.b };
+        c = { first_number(sticks.c),&sticks.c };
+    }
+    else if (*(a.b) == sticks.b)
+    {
+        b = { first_number(sticks.c),&sticks.c };
+        c = { first_number(sticks.a),&sticks.a };
+    }
+    else {
+        b = { first_number(sticks.a),&sticks.a };
+        c = { first_number(sticks.b),&sticks.b };
+    }
+
+    if (a.a == *i || (b.a != 0 && a.a > b.a)) {
+        if (a.a == *i || (c.a != 0 && a.a > c.a))
         {
-           return 1;
+            return 1;
         }
-        else{
-            move_one(*(a.b),*(c.b));
+        else {
+            *i = a.a;
+            move_one(*(a.b), *(c.b));
             return 0;
         }
-        
+
     }
-    move_one(*(a.b),*(b.b));
+    *i = a.a;
+    move_one(*(a.b), *(b.b));
     return 0;
 
 }
@@ -169,7 +203,7 @@ int beat_and_put(num &a,num &b,num &c){
 //检测到c柱的位子满就退出
 bool test() {
     auto i = end(sticks.c) - 1;
-    if (*i!=0) {
+    if (*i != 0) {
         return 1;
     }
 
@@ -177,31 +211,42 @@ bool test() {
 }
 
 void while_move() {
+    int tag = 0;
     while (1)
     {
-    vector<num> list = read_num();
+        vector<num> list = read_num();
+        for (auto I = begin(list); I != end(list)-1; ++I)
+        {
+            for (auto i = begin(list); i != end(list)-1; ++i) {
+                if (i->a < (i + 1)->a) {
+                    num n = *i;
+                    *i = *(i + 1);
+                    *(i + 1) = n;
 
-    for (auto i = begin(list); i != end(list); ++i) {
-        if (i->a < (i + 1)->a) {
-            num n = *i;
-            *i = *(i + 1);
-            *(i + 1) = n;
-
+                }
+            }
         }
-    }
-    std::cout << list[0].a << " " << list[1].a << " " << list[2].a << std::endl;
-    //从大到小排列，并找出最大数
-    //vector<num> list({list()});
-    int tag = 0;
 
-    while(beat_and_put(list[0],list[1],list[2] ) ){
+        std::cout << list[0].a << " " << list[1].a << " " << list[2].a << std::endl;
+        std::cout << "- - -" << std::endl;
+        
+        //从大到小排列，并找出最大数
+        //vector<num> list({list()});
+
+
+        if (beat_and_put(list[0], &tag)) {
+            if (beat_and_put(list[1],&tag)) {
+                if (beat_and_put(list[2],&tag));
+            }
+                             
+        }
+           
+
         //检测到c柱的位子满就退出
-        if(test())
-        return;
+        if (test())
+            return;
     }
-            
-    }
-    
+
 }
 
 
