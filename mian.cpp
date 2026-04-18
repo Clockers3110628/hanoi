@@ -131,21 +131,21 @@ vector<num> read_num() {
     return a;
 }
 
-vector<num> list() {
+// vector<num> list() {
 
-    vector<num> list = read_num();
+//     vector<num> list = read_num();
 
-    for (auto i = begin(list); i != end(list); ++i) {
-        if (i->a < (i + 1)->a) {
-            num n = *i;
-            *i = *(i + 1);
-            *(i + 1) = n;
+//     for (auto i = begin(list); i != end(list); ++i) {
+//         if (i->a < (i + 1)->a) {
+//             num n = *i;
+//             *i = *(i + 1);
+//             *(i + 1) = n;
 
-        }
-    }
-    std::cout << list[0].a << " " << list[1].a << " " << list[2].a << std::endl;
-    return list;
-}
+//         }
+//     }
+//     std::cout << list[0].a << " " << list[1].a << " " << list[2].a << std::endl;
+//     return list;
+// }
 
 //对比函数
 int beat_and_put(num &a,num &b,num &c){
@@ -179,8 +179,19 @@ bool test() {
 void while_move() {
     while (1)
     {
+    vector<num> list = read_num();
+
+    for (auto i = begin(list); i != end(list); ++i) {
+        if (i->a < (i + 1)->a) {
+            num n = *i;
+            *i = *(i + 1);
+            *(i + 1) = n;
+
+        }
+    }
+    std::cout << list[0].a << " " << list[1].a << " " << list[2].a << std::endl;
     //从大到小排列，并找出最大数
-    vector<num> list((list()));
+    //vector<num> list({list()});
     int tag = 0;
 
     while(beat_and_put(list[0],list[1],list[2] ) ){
