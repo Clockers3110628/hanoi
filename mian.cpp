@@ -9,6 +9,8 @@ struct stick {
     vector<int> a = vector<int>(layer);
     vector<int> b = vector<int>(layer);
     vector<int> c = vector<int>(layer);
+
+    void stick_printf(stick* sticks);
 }sticks;
 
 struct num {
@@ -22,7 +24,7 @@ struct all_num {
     num c;
 };
 
-void stick_printf(stick* sticks);
+//void stick_printf(stick* sticks);
 void move(int n, vector<int>& a, vector<int>& b, vector<int>& c);
 void stick_int();
 void move_one(vector<int>& a, vector<int>& c);
@@ -45,7 +47,7 @@ int main() {
         std::cout << "选择层数（10以下）" << std::endl;
         std::cin >> layer;
         stick_int();
-        if (1)
+        if (a)
         {
             move(layer, sticks.a, sticks.b, sticks.c);
         }
@@ -61,7 +63,7 @@ int main() {
 }
 
 
-void stick_printf(stick* sticks) {
+void stick::stick_printf(stick* sticks) {
     for (int i = layer; i >= 1; --i) {
         std::cout << sticks->a[i - 1] << " " << sticks->b[i - 1] << " " << sticks->c[i - 1] << std::endl;
 
@@ -107,7 +109,8 @@ void move_one(vector<int>& a, vector<int>& c) {
         ++p;
         *p = tag;
     }
-    stick_printf(&sticks);
+
+    sticks.stick_printf(&sticks);
 
 }
 
@@ -131,10 +134,8 @@ void stick_int() {
     for (int i = 1; i <= layer; ++i) {
         sticks.a[layer - i] = i;
     }
-    stick_printf(&sticks);
+    sticks.stick_printf(&sticks);
 }
-
-
 
 num ReadOneNum(vector<int>& a) {
     num x;
