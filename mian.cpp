@@ -5,12 +5,27 @@ using std::vector;
 
 int layer = 10;
 
+// struct api {
+//     void move_one(vector<int>& a, vector<int>& c);
+//     int first_number(vector<int>& a);
+//     int first_number(vector<int>& a, int b);
+//     vector<num> read_num();
+//     num ReadOneNum(vector<int>& a);
+//     bool beat_and_put(num& a, int* i);
+//     bool test();
+// };
+
 struct stick {
     vector<int> a = vector<int>(layer);
     vector<int> b = vector<int>(layer);
     vector<int> c = vector<int>(layer);
 
     void stick_printf(stick* sticks);
+    void move(int n, vector<int>& a, vector<int>& b, vector<int>& c);
+    void stick_int();
+    void while_move();
+
+    struct api api;
 }sticks;
 
 struct num {
@@ -24,18 +39,15 @@ struct all_num {
     num c;
 };
 
-//void stick_printf(stick* sticks);
-void move(int n, vector<int>& a, vector<int>& b, vector<int>& c);
-void stick_int();
-void move_one(vector<int>& a, vector<int>& c);
-int first_number(vector<int>& a);
-int first_number(vector<int>& a, int b);
-void while_move();
-
-vector<num> read_num();
-num ReadOneNum(vector<int>& a);
-bool test();
-bool beat_and_put(num& a, int* i);
+struct api {
+    void move_one(vector<int>& a, vector<int>& c);
+    int first_number(vector<int>& a);
+    int first_number(vector<int>& a, int b);
+    vector<num> read_num();
+    num ReadOneNum(vector<int>& a);
+    bool beat_and_put(num& a, int* i);
+    bool test();
+};
 
 int main() {
     int b;
@@ -46,13 +58,13 @@ int main() {
         std::cin >> a;
         std::cout << "选择层数（10以下）" << std::endl;
         std::cin >> layer;
-        stick_int();
+        sticks.stick_int();
         if (a)
         {
-            move(layer, sticks.a, sticks.b, sticks.c);
+            sticks.move(layer, sticks.a, sticks.b, sticks.c);
         }
         else {
-            while_move();
+            sticks.while_move();
         }
 
         std::cout << "选1继续，选0退出" << std::endl;
@@ -72,7 +84,7 @@ void stick::stick_printf(stick* sticks) {
 
 }
 
-int first_number(vector<int>& a) {
+int api::first_number(vector<int>& a) {
     auto q = end(a) - 1;
     for (; q != begin(a) && *q == 0; --q) {}//找到柱子的第一个数或起始数（未知是0或数）
     if (q == begin(a) && *q == 0) {
@@ -83,7 +95,7 @@ int first_number(vector<int>& a) {
     }
 }
 
-int first_number(vector<int>& a, int b) {
+int api::first_number(vector<int>& a, int b) {
     auto q = end(a) - 1;
     for (; q != begin(a) && *q == 0; --q) {}//找到柱子的第一个数或起始数（未知是0或数）
     if (q == begin(a) && *q == 0) {
@@ -96,7 +108,7 @@ int first_number(vector<int>& a, int b) {
     }
 }
 
-void move_one(vector<int>& a, vector<int>& c) {
+void api::move_one(vector<int>& a, vector<int>& c) {
 
     int tag = first_number(a, 0);
 
@@ -114,19 +126,19 @@ void move_one(vector<int>& a, vector<int>& c) {
 
 }
 
-void move(int n, vector<int>& a, vector<int>& b, vector<int>& c) {
+void stick::move(int n, vector<int>& a, vector<int>& b, vector<int>& c) {
     if (n == 1) {
         //
-        move_one(a, c);
+        sticks.api.move_one(a, c);
         return;
     }
 
     move(n - 1, a, c, b);
-    move_one(a, c);
+    sticks.api.move_one(a, c);
     move(n - 1, b, a, c);
 }
 
-void stick_int() {
+void stick::stick_int() {
     //先全清零
     for (int i = 1; i <= 10; ++i) {
         sticks.c[10 - i] = 0;
@@ -137,7 +149,7 @@ void stick_int() {
     sticks.stick_printf(&sticks);
 }
 
-num ReadOneNum(vector<int>& a) {
+num api::ReadOneNum(vector<int>& a) {
     num x;
     x.a = first_number(a);
     x.b = &a;
@@ -145,7 +157,7 @@ num ReadOneNum(vector<int>& a) {
 }
 
 
-vector<num> read_num() {
+vector<num> api::read_num() {
     vector<num> a{ ReadOneNum(sticks.a),ReadOneNum(sticks.b),ReadOneNum(sticks.c) };
 
     return a;
@@ -169,7 +181,7 @@ vector<num> read_num() {
 
 
 //对比函数
-bool beat_and_put(num& a, int* i) {
+bool api::beat_and_put(num& a, int* i) {
     num b;
     num c;
 
@@ -206,7 +218,7 @@ bool beat_and_put(num& a, int* i) {
 }
 
 //检测到c柱的位子满就退出
-bool test() {
+bool api::test() {
     auto i = end(sticks.c) - 1;
     if (*i != 0) {
         return 1;
@@ -215,11 +227,11 @@ bool test() {
     return 0;
 }
 
-void while_move() {
+void stick::while_move() {
     int tag = 0;
     while (1)
     {
-        vector<num> list = read_num();
+        vector<num> list = sticks.api.read_num();
         for (auto I = begin(list); I != end(list)-1; ++I)
         {
             for (auto i = begin(list); i != end(list)-1; ++i) {
@@ -235,24 +247,22 @@ void while_move() {
         std::cout << list[0].a << " " << list[1].a << " " << list[2].a << std::endl;
         std::cout << "- - -" << std::endl;
         
-        if (beat_and_put(list[0], &tag)) {
-            if (beat_and_put(list[1],&tag)) {
-                if (beat_and_put(list[2],&tag));
+        if (sticks.api.beat_and_put(list[0], &tag)) {
+            if (sticks.api.beat_and_put(list[1],&tag)) {
+                if (sticks.api.beat_and_put(list[2],&tag));
             }
                              
         }
            
         //检测到c柱的位子满就退出
-        if (test())
+        if (sticks.api.test())
             return;
     }
 
 }
 
 
-//容纳不同类型的数组
 //结构体能否先声明
-//遍历除数组外的对象 注释快捷键
 // 忌边敲边想，即便有思路
 // 函数里不能break
 // 无效的强制类型转换，指针转int等
