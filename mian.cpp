@@ -5,29 +5,6 @@ using std::vector;
 
 int layer = 10;
 
-// struct api {
-//     void move_one(vector<int>& a, vector<int>& c);
-//     int first_number(vector<int>& a);
-//     int first_number(vector<int>& a, int b);
-//     vector<num> read_num();
-//     num ReadOneNum(vector<int>& a);
-//     bool beat_and_put(num& a, int* i);
-//     bool test();
-// };
-
-struct stick {
-    vector<int> a = vector<int>(layer);
-    vector<int> b = vector<int>(layer);
-    vector<int> c = vector<int>(layer);
-
-    void stick_printf(stick* sticks);
-    void move(int n, vector<int>& a, vector<int>& b, vector<int>& c);
-    void stick_int();
-    void while_move();
-
-    struct api api;
-}sticks;
-
 struct num {
     int a;
     vector<int>* b; //竟然用指针吗,不得不用二级指针
@@ -48,6 +25,18 @@ struct api {
     bool beat_and_put(num& a, int* i);
     bool test();
 };
+struct stick {
+    vector<int> a = vector<int>(layer);
+    vector<int> b = vector<int>(layer);
+    vector<int> c = vector<int>(layer);
+
+    void stick_printf(stick* sticks);
+    void move(int n, vector<int>& a, vector<int>& b, vector<int>& c);
+    void stick_int();
+    void while_move();
+
+    struct api api;
+}sticks;
 
 int main() {
     int b;
@@ -261,8 +250,6 @@ void stick::while_move() {
 
 }
 
-
-//结构体能否先声明
 // 忌边敲边想，即便有思路
 // 函数里不能break
 // 无效的强制类型转换，指针转int等
